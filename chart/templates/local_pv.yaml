@@ -1,0 +1,26 @@
+{{ if .Values.local.enabled }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.local.pvName }}
+  labels:
+    {{- include "coacervate.labels" . | nindent 4 }}
+    module: yagna
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: {{ .Values.local.storageClass }}
+  local:
+    path: {{ .Values.local.pvPath }}
+  # nodeAffinity:
+  #   required:
+  #     nodeSelectorTerms:
+  #     - matchExpressions:
+  #       - key: kubernetes.io/hostname
+  #         operator: In
+  #         values:
+  #         - {{ .Values.local.nodeName }}
+{{ end }}

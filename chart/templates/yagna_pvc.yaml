@@ -1,0 +1,21 @@
+apiVersion: v1
+
+kind: PersistentVolumeClaim
+
+metadata:
+  name: {{ .Values.yagna.pvcName }}
+  labels:
+    {{- include "coacervate.labels" . | nindent 4 }}
+    module: yagna
+
+spec:
+  {{ if .Values.local.enabled }}
+  storageClassName: {{ .Values.local.storageClass }}
+  {{ else }}
+  storageClassName: {{ .Values.yagna.storageClass }}
+  {{ end }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi

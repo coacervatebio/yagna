@@ -1,0 +1,6 @@
+# Values overrides
+chart/my_values.yaml
+chart/my_test_values.yaml
+
+# Chart dependencies
+**/charts/*.tgz

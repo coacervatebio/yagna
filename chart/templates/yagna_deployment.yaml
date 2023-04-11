@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  name: {{ .Values.yagna.deploymentName }}
+  labels:
+    {{- include "coacervate.labels" . | nindent 4 }}
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      {{- include "coacervate.selectorLabels" . | nindent 6 }}
+
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "coacervate.selectorLabels" . | nindent 8 }}
+
+    spec:
+      volumes:
+        - name: {{ .Values.yagna.rootVolName }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.yagna.pvcName }}
+      containers:
+        - name: {{ .Values.yagna.deploymentName }}
+          image: "{{ .Values.image.yagna.repository }}:{{ .Values.image.yagna.tag }}"
+          imagePullPolicy: {{ .Values.image.yagna.pullPolicy }}
+          volumeMounts:
+            - name: {{ .Values.yagna.rootVolName }}
+              subPath: {{ .Values.yagna.keySubpath }}
+              mountPath: {{ .Values.yagna.keyMount }}
+            - name: {{ .Values.yagna.rootVolName }}
+              subPath: {{ .Values.yagna.socketSubpath }}
+              mountPath: {{ .Values.yagna.socketMount }}
+          env:
+          - name: YAGNA_API_URL
+            value: "http://0.0.0.0:7465"
+          ports:
+          - containerPort: {{ .Values.yagna.port }}

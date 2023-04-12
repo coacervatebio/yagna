@@ -15,12 +15,12 @@ spec:
   storageClassName: {{ .Values.local.storageClass }}
   local:
     path: {{ .Values.local.pvPath }}
-  # nodeAffinity:
-  #   required:
-  #     nodeSelectorTerms:
-  #     - matchExpressions:
-  #       - key: kubernetes.io/hostname
-  #         operator: In
-  #         values:
-  #         - {{ .Values.local.nodeName }}
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - {{ .Values.local.nodeHostName }}
 {{ end }}

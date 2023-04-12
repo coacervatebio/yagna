@@ -2,64 +2,40 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 1
+manualJob:
+  enabled: false
+  jobName: call-variants-benchmark
+  containerName: requestor
+  inputHostPath: ""
+  containerMountPath: "/data/results"
+
+# Local storage if running on e.g. minikube
+local:
+  enabled: false
+  storageClass: manual
+  pvPath: ""
+  nodeHostName: "" # k get nodes --show-labels | grep hostname
+  pvName: yagna-local-pv
 
 image:
   yagna:
-    repository: coacervate-yagna
+    repository: coacervate/yagna
     tag: latest
-    pullPolicy: Never
+    pullPolicy: Always
   requestor:
-    repository: coacervate-requestor
+    repository: coacervate/requestor
     tag: latest
-    pullPolicy: Never
+    pullPolicy: Always
 
-storage:
-  inputHostPath: ""
-
-yagnaDeploymentName: yagna-deployment
-yagnaPvcName: yagna-pvc
-yagnaStorageClass: standard # Default minikube storage class, adjust PVC as needed
-yagnaRootVolName: yagna-storage
-yagnaRootHostPath: /data # Generic hostPath that's likely to always exist
-yagnaSocketSubpath: yagna-socket
-yagnaSocketMount: /tmp # Allows yagna daemon to communicate over unix socket
-yagnaKeySubpath: yagna-keys
-yagnaKeyMount: /root/.local/share/yagna # Default location yagna looks for appkeys etc
-yagnaSvcName: yagna-service
-yagnaPort: 7465
-
-imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
-
-podAnnotations: {}
-
-podSecurityContext: {}
-  # fsGroup: 2000
-
-securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
-
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
+yagna:
+  storageClass: local-path # Default minikube storage class, adjust PVC as needed
+  deploymentName: yagna-deployment
+  pvName: yagna-pv
+  pvcName: yagna-pvc
+  rootVolName: yagna-storage
+  socketSubpath: yagna-socket
+  socketMount: /tmp # Allows yagna daemon to communicate over unix socket
+  keySubpath: yagna-keys
+  keyMount: /root/.local/share/yagna # Default location yagna looks for appkeys etc
+  svcName: yagna-service
+  port: 7465

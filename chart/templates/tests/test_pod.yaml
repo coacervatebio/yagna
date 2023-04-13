@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: yagna-test-pod
+  annotations:
+    "helm.sh/hook": test
+    "helm.sh/hook-delete-policy": hook-succeeded
+  labels:
+    module: test-runner
+spec:
+  volumes:
+    - name: {{ .Values.yagna.rootVolName }}
+      persistentVolumeClaim:
+        claimName: {{ .Values.yagna.pvcName }}
+  containers:
+    - name: yagna-test-container
+      image: "{{ .Values.test.podImageRepo }}:{{ .Values.test.podImageTag }}"
+      imagePullPolicy: Always
+      volumeMounts:
+      - name: {{ .Values.yagna.rootVolName }}
+        subPath: {{ .Values.yagna.socketSubpath }}
+        mountPath: {{ .Values.yagna.socketMount }}
+      env:
+      - name: YAGNA_API_URL
+        value: "http://{{ .Values.yagna.svcName }}:{{ .Values.yagna.port }}"
+  restartPolicy: Never

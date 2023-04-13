@@ -29,7 +29,7 @@ spec:
           persistentVolumeClaim:
             claimName: {{ .Values.yagna.pvcName }}
       containers:
-        - name: {{ .Values.yagna.deploymentName }}
+        - name: {{ .Values.yagna.containerName }}
           image: "{{ .Values.image.yagna.repository }}:{{ .Values.image.yagna.tag }}"
           imagePullPolicy: {{ .Values.image.yagna.pullPolicy }}
           volumeMounts:

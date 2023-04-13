@@ -1,1 +1,11 @@
-Notes...
+Yagna Helm Chart
+
+Thanks for installing this Helm Chart!
+
+Currently only requestors are supported.
+
+You can test this chart by running `helm test my-release` 
+(substituting my-release for whatever release name you just used.)
+
+This will pull a minimal container with yapapi and a hello world requestor script similar
+to the task example of the same name in the docs.

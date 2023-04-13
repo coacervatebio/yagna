@@ -2,34 +2,22 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-manualJob:
-  enabled: false
-  jobName: call-variants-benchmark
-  containerName: requestor
-  inputHostPath: ""
-  containerMountPath: "/data/results"
-
 # Local storage if running on e.g. minikube
 local:
   enabled: false
-  storageClass: manual
-  pvPath: ""
+  storageClass: local-sc
+  pvPath: "" # existing path on k8s node e.g. /var/lib/yagna
   nodeHostName: "" # k get nodes --show-labels | grep hostname
   pvName: yagna-local-pv
 
-image:
-  yagna:
-    repository: coacervate/yagna
-    tag: latest
-    pullPolicy: Always
-  requestor:
-    repository: coacervate/requestor
-    tag: latest
-    pullPolicy: Always
-
+# Yagna deployment values
 yagna:
-  storageClass: local-path # Default minikube storage class, adjust PVC as needed
+  storageClass: ""
   deploymentName: yagna-deployment
+  containerName: yagna-deployment-container
+  imageRepo: coacervate/yagna
+  imageTag: latest
+  imagePullPolicy: Always
   pvName: yagna-pv
   pvcName: yagna-pvc
   rootVolName: yagna-storage
@@ -39,3 +27,11 @@ yagna:
   keyMount: /root/.local/share/yagna # Default location yagna looks for appkeys etc
   svcName: yagna-service
   port: 7465
+
+# Values for templates/tests
+test:
+  pvName: test-pv
+  pvcLabel: test-storage-label
+  pvcName: test-pvc
+  podImageRepo: coacervate/test-requestor
+  podImageTag: latest

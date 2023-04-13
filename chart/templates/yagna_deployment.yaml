@@ -30,8 +30,8 @@ spec:
             claimName: {{ .Values.yagna.pvcName }}
       containers:
         - name: {{ .Values.yagna.containerName }}
-          image: "{{ .Values.image.yagna.repository }}:{{ .Values.image.yagna.tag }}"
-          imagePullPolicy: {{ .Values.image.yagna.pullPolicy }}
+          image: "{{ .Values.yagna.imageRepo }}:{{ .Values.yagna.imageTag }}"
+          imagePullPolicy: {{ .Values.yagna.imagePullPolicy }}
           volumeMounts:
             - name: {{ .Values.yagna.rootVolName }}
               subPath: {{ .Values.yagna.keySubpath }}

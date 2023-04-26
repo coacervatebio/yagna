@@ -4,3 +4,6 @@ chart/my_test_values.yaml
 
 # Chart dependencies
 **/charts/*.tgz
+
+# Scratch dir
+scratch/*

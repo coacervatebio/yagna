@@ -7,7 +7,7 @@ local:
   enabled: false
   storageClass: local-sc
   pvPath: "" # existing path on k8s node e.g. /var/lib/yagna
-  nodeHostName: "" # k get nodes --show-labels | grep hostname
+  nodeHostName: "" # kubectl get nodes --show-labels | grep hostname
   pvName: yagna-local-pv
 
 # Yagna deployment values
@@ -27,6 +27,9 @@ yagna:
   keyMount: /root/.local/share/yagna # Default location yagna looks for appkeys etc
   svcName: yagna-service
   port: 7465
+
+secret:
+  keystoreFilePath: files/example_keystore.json
 
 # Values for templates/tests
 test:

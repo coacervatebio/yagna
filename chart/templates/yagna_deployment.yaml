@@ -6,6 +6,7 @@ metadata:
   name: {{ .Values.yagna.deploymentName }}
   labels:
     {{- include "coacervate.labels" . | nindent 4 }}
+    module: yagna-deployment
 
 spec:
   replicas: 1
@@ -28,17 +29,28 @@ spec:
         - name: {{ .Values.yagna.rootVolName }}
           persistentVolumeClaim:
             claimName: {{ .Values.yagna.pvcName }}
+        - name: {{ .Values.existingWallet.volName }}
+          secret:
+            secretName: {{ .Values.existingWallet.secretName }}
+            optional: true
       containers:
         - name: {{ .Values.yagna.containerName }}
           image: "{{ .Values.yagna.imageRepo }}:{{ .Values.yagna.imageTag }}"
           imagePullPolicy: {{ .Values.yagna.imagePullPolicy }}
           volumeMounts:
             - name: {{ .Values.yagna.rootVolName }}
-              subPath: {{ .Values.yagna.keySubpath }}
               mountPath: {{ .Values.yagna.keyMount }}
+              subPath: {{ .Values.yagna.keySubpath }}
             - name: {{ .Values.yagna.rootVolName }}
-              subPath: {{ .Values.yagna.socketSubpath }}
               mountPath: {{ .Values.yagna.socketMount }}
+              subPath: {{ .Values.yagna.socketSubpath }}
+            - name: {{ .Values.existingWallet.volName }}
+              mountPath: {{ .Values.existingWallet.mountPath }}
+              subPath: {{ .Values.existingWallet.keyName }}
+              readOnly: true
+          command:
+            - sleep
+            - infinity
           env:
           - name: YAGNA_API_URL
             value: "http://0.0.0.0:7465"

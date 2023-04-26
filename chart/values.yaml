@@ -4,10 +4,10 @@
 
 # Local storage if running on e.g. minikube
 local:
-  enabled: false
-  storageClass: local-sc
+  enabled: true
+  storageClass: manual
   pvPath: "" # existing path on k8s node e.g. /var/lib/yagna
-  nodeHostName: "" # kubectl get nodes --show-labels | grep hostname
+  nodeHostName: "" # k get nodes --show-labels | grep hostname
   pvName: yagna-local-pv
 
 # Yagna deployment values
@@ -28,8 +28,15 @@ yagna:
   svcName: yagna-service
   port: 7465
 
-secret:
+# For importing and existing keystore
+# see https://handbook.golem.network/payments/using-golem-on-mainnet/backing-up-your-golem-wallet
+existingWallet:
+  enabled: false
   keystoreFilePath: files/example_keystore.json
+  volName: keystore-volume
+  secretName: keystore-secret
+  mountPath: /mnt/secrets/yagna_keystore.json
+  keyName: yagna-keystore
 
 # Values for templates/tests
 test:

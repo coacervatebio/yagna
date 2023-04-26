@@ -11,7 +11,7 @@ spec:
     storage: 10Gi
   accessModes:
   - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
+  persistentVolumeReclaimPolicy: {{ .Values.local.reclaimPolicy }}
   storageClassName: {{ .Values.local.storageClass }}
   local:
     path: {{ .Values.local.pvPath }}

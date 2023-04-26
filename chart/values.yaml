@@ -9,6 +9,7 @@ local:
   pvPath: "" # existing path on k8s node e.g. /var/lib/yagna
   nodeHostName: "" # k get nodes --show-labels | grep hostname
   pvName: yagna-local-pv
+  reclaimPolicy: retain
 
 # Yagna deployment values
 yagna:

@@ -48,9 +48,6 @@ spec:
               mountPath: {{ .Values.existingWallet.mountPath }}
               subPath: {{ .Values.existingWallet.keyName }}
               readOnly: true
-          command:
-            - sleep
-            - infinity
           env:
           - name: YAGNA_API_URL
             value: "http://0.0.0.0:7465"

@@ -24,7 +24,10 @@ elif [ "$(get_appkey)" = "null" ]; then
         yagna id update --set-default "0x$KEYSTORE_ADDRESS"
         printf "\nCreating app key..\n"
         yagna app-key create "keystore-$(echo "$KEYSTORE_ADDRESS" | cut -c1-5)-requestor"
-    else # Create and fund for testnet
+        printf "\nInitializing requestor on %s with %s driver..\n" "$PAYMENT_NETWORK" "$PAYMENT_DRIVER"
+        yagna payment init --sender --network "$PAYMENT_NETWORK" --driver "$PAYMENT_DRIVER"
+    # Create and fund for testnet
+    else 
         printf "\nNo appkey found, creating requestor..\n"
         yagna app-key create "test-requestor"
         sleep 5

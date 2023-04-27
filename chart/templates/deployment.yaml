@@ -57,6 +57,18 @@ spec:
                 name: {{ .Values.existingWallet.secretName }}
                 key: {{ .Values.existingWallet.pathKey }}
                 optional: true
+          - name: PAYMENT_NETWORK
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.existingWallet.secretName }}
+                key: {{ .Values.existingWallet.networkKey }}
+                optional: true
+          - name: PAYMENT_DRIVER
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.existingWallet.secretName }}
+                key: {{ .Values.existingWallet.driverKey }}
+                optional: true
           command:
             - sleep
             - infinity

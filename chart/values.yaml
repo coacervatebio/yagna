@@ -37,6 +37,11 @@ existingWallet:
   secretName: keystore-secret
   mountPath: /mnt/secrets/yagna_keystore.json
   contentsKey: yagna-keystore
+  pathKey: yagna-keystore-path
+  networkKey: payment-network
+  networkValue: polygon
+  driverKey: payment-driver
+  driverValue: erc20
 
 # Values for templates/tests
 test:

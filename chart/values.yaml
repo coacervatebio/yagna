@@ -9,7 +9,7 @@ local:
   pvPath: "" # existing path on k8s node e.g. /var/lib/yagna
   nodeHostName: "" # k get nodes --show-labels | grep hostname
   pvName: yagna-local-pv
-  reclaimPolicy: retain
+  reclaimPolicy: Retain
 
 # Yagna deployment values
 yagna:
@@ -19,8 +19,7 @@ yagna:
   imageRepo: coacervate/yagna
   imageTag: latest
   imagePullPolicy: Always
-  pvName: yagna-pv
-  pvcName: yagna-pvc
+  pvcName: yagna-pvc # Can change this to specify mainnet vs test
   rootVolName: yagna-storage
   socketSubpath: yagna-socket
   socketMount: /tmp # Allows yagna daemon to communicate over unix socket
@@ -37,7 +36,7 @@ existingWallet:
   volName: keystore-volume
   secretName: keystore-secret
   mountPath: /mnt/secrets/yagna_keystore.json
-  keyName: yagna-keystore
+  contentsKey: yagna-keystore
 
 # Values for templates/tests
 test:

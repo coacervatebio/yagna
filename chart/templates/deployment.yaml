@@ -51,5 +51,14 @@ spec:
           env:
           - name: YAGNA_API_URL
             value: "http://0.0.0.0:7465"
+          - name: KEYSTORE_PATH
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.existingWallet.secretName }}
+                key: {{ .Values.existingWallet.pathKey }}
+                optional: true
+          command:
+            - sleep
+            - infinity
           ports:
           - containerPort: {{ .Values.yagna.port }}

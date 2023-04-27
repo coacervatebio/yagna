@@ -1,18 +1,12 @@
 #!/bin/sh
 
 # Start the yagna daemon and put it in the background
-# Using `-v yagna_datadir:/root/.local/share/yagna`
-# will persist yagna datadir between containers
 echo "Starting yagna daemon.."
-yagna service run &
+yagna service run > /home/yagna_$(date '+%Y-%m-%d_%H:%M:%S').log 2>&1 &
 sleep 20
 
 get_appkey () {
     echo $(yagna app-key list --json | jq -r .[0].key)
-}
-
-get_keystore_address () {
-    echo $(cat $keystore_path | grep address)
 }
 
 if [ -z $(get_appkey) ]
@@ -20,26 +14,36 @@ then
     echo "Problem initializing requestor, check permissions.."
     exit 1
 elif [ $(get_appkey) = "null" ]
-    if [ -f "/mnt/secrets/yagna_keystore.json" ]
-    then
-        yagna id create --from-keystore $keystore_path
-        yagna id update --set-default $(get_keystore_address)
-        # kill yagna daemon
-        rm /root/.local/share/yagna/accounts.json
-        yagna service run &
-        # make new appkey? only if used with test before
-    else
+then
+    #check for mounted secret aka existing keystore
+    if [ -n "$KEYSTORE_PATH" ] && [ -f "$KEYSTORE_PATH" ]; then
+        echo ""
+        echo "Found keystore at $KEYSTORE_PATH, importing.."
+        KEYSTORE_ADDRESS=$(jq -r  .address $KEYSTORE_PATH)
+        yagna id create --from-keystore $KEYSTORE_PATH
+        echo ""
+        echo "Setting imported keystore as default.."
+        yagna id update --set-default 0x$KEYSTORE_ADDRESS
+        echo ""
+        echo "Creating app key.."
+        yagna app-key create keystore-$(echo $KEYSTORE_ADDRESS | cut -c1-5)-requestor
+    else #create and fund for testnet
+        echo ""
         echo "No appkey found, creating requestor.."
-        yagna app-key create requestor
+        yagna app-key create test-requestor
         sleep 5
+        echo ""
         echo "Funding.."
         yagna payment fund
         sleep 10
+    fi
 else
+    echo ""
     echo "Found existing appkey"
 fi
 
-echo "Exporting app key and initializing yagna as sender.."
-yagna payment init --sender
+echo ""
+echo "Requestor initialized with:"
+yagna app-key list
 
 sleep infinity

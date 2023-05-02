@@ -2,7 +2,7 @@
 
 # Start the yagna daemon and put it in the background
 printf "Starting yagna daemon..\n"
-yagna service run > "/home/yagna_$(date '+%Y-%m-%d_%H:%M:%S').log" 2>&1 &
+yagna service run &
 sleep 20
 
 # Function to get the first app key

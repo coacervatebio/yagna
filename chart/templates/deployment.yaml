@@ -69,8 +69,5 @@ spec:
                 name: {{ .Values.existingWallet.secretName }}
                 key: {{ .Values.existingWallet.driverKey }}
                 optional: true
-          command:
-            - sleep
-            - infinity
           ports:
           - containerPort: {{ .Values.yagna.port }}

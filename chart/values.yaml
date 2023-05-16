@@ -19,13 +19,16 @@ yagna:
   imageRepo: coacervate/yagna
   imageTag: latest
   imagePullPolicy: Always
-  pvcName: yagna-pvc # Can change this to specify mainnet vs test
+  pvcName: yagna-pvc
   rootVolName: yagna-storage
   socketSubpath: yagna-socket
-  socketMount: /tmp # Allows yagna daemon to communicate over unix socket
+  socketMount: /yagna # Allows yagna daemon to communicate over unix socket
+  gsbEnvKey: GSB_URL # Specifies unix socket location for communicating with daemon
+  gsbEnvValue: unix:/yagna/yagna.sock
   keySubpath: yagna-keys
   keyMount: /root/.local/share/yagna # Default location yagna looks for appkeys etc
   svcName: yagna-service
+  apiEnvKey: YAGNA_API_URL
   port: 7465
 
 # For importing and existing keystore

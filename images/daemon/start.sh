@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Initial sleep to let previous release cleanup on `helm upgrade`
+sleep 20
+
 # Start the yagna daemon and put it in the background
 printf "Starting yagna daemon..\n"
 yagna service run &

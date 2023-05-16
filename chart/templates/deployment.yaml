@@ -20,6 +20,7 @@ spec:
       {{- with .Values.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
+        rollme: {{ randAlphaNum 5 | quote }}
       {{- end }}
       labels:
         {{- include "coacervate.selectorLabels" . | nindent 8 }}
@@ -49,8 +50,10 @@ spec:
               subPath: {{ .Values.existingWallet.keyName }}
               readOnly: true
           env:
-          - name: YAGNA_API_URL
-            value: "http://0.0.0.0:7465"
+          - name: {{ .Values.yagna.apiEnvKey }}
+            value: "http://0.0.0.0:{{ .Values.yagna.port }}"
+          - name: {{ .Values.yagna.gsbEnvKey }}
+            value: {{ .Values.yagna.gsbEnvValue }}
           - name: KEYSTORE_PATH
             valueFrom:
               secretKeyRef:

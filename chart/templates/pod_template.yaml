@@ -20,5 +20,7 @@ template:
           subPath: {{ .Values.yagna.socketSubpath }}
           mountPath: {{ .Values.yagna.socketMount }}
         env:
-        - name: YAGNA_API_URL
+        - name: {{ .Values.yagna.apiEnvKey }}
           value: "http://{{ .Values.yagna.svcName }}:{{ .Values.yagna.port }}"
+        - name: {{ .Values.yagna.gsbEnvKey }}
+          value: {{ .Values.yagna.gsbEnvValue }}

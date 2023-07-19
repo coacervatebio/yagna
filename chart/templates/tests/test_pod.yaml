@@ -25,4 +25,5 @@ spec:
         value: "http://{{ .Values.yagna.svcName }}:{{ .Values.yagna.port }}"
       - name: {{ .Values.yagna.gsbEnvKey }}
         value: {{ .Values.yagna.gsbEnvValue }}
+      command: ["python", "/home/hello_golem.py"]
   restartPolicy: Never

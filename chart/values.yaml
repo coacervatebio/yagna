@@ -51,5 +51,5 @@ test:
   pvName: test-pv
   pvcLabel: test-storage-label
   pvcName: test-pvc
-  podImageRepo: coacervate/test-requestor
+  podImageRepo: coacervate/yagna
   podImageTag: latest

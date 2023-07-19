@@ -35,7 +35,7 @@ elif [ "$(get_appkey)" = "null" ]; then
         yagna app-key create "test-requestor"
         sleep 5
         printf "\nFunding..\n"
-        yagna payment fund
+        yagna payment fund --network "$PAYMENT_NETWORK" --driver "$PAYMENT_DRIVER"
         sleep 10
     fi
 else

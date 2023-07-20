@@ -65,12 +65,10 @@ spec:
               secretKeyRef:
                 name: {{ .Values.existingWallet.secretName }}
                 key: {{ .Values.existingWallet.networkKey }}
-                optional: true
           - name: PAYMENT_DRIVER
             valueFrom:
               secretKeyRef:
                 name: {{ .Values.existingWallet.secretName }}
                 key: {{ .Values.existingWallet.driverKey }}
-                optional: true
           ports:
           - containerPort: {{ .Values.yagna.port }}

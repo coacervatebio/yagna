@@ -34,7 +34,7 @@ elif [ "$(get_appkey)" = "null" ]; then
         printf "\nNo appkey found, creating requestor..\n"
         yagna app-key create "test-requestor"
         sleep 5
-        printf "\nFunding..\n"
+        printf "\nFunding on %s using the %s driver..\n" "$PAYMENT_NETWORK" "$PAYMENT_DRIVER"
         yagna payment fund --network "$PAYMENT_NETWORK" --driver "$PAYMENT_DRIVER"
         sleep 10
     fi
